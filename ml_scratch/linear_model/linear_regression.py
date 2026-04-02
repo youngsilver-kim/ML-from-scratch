@@ -1,24 +1,35 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
-# 데이터 생성
-X = np.random.rand(100, 1) * 10
-y = 3 * X.squeeze() + 2 + np.random.randn(100)
+class LinearRegression:
+    def __init__(self, lr=0.01, n_iters=1000):
+        self.lr = lr
+        self.n_iters = n_iters
+        self.weights = None
+        self.bias = None
+        self.loss_history = []
 
-# 모델 학습
-model = LinearRegression(lr=0.01, n_iters=1000)
-model.fit(X, y)
+    def fit(self, X, y):
+        X = np.asarray(X, dtype=float)
+        y = np.asarray(y, dtype=float)
 
-# 예측
-y_pred = model.predict(X)
+        n_samples, n_features = X.shape
+        self.weights = np.zeros(n_features)
+        self.bias = 0.0
 
-# 시각화
-plt.scatter(X, y)
-plt.plot(X, y_pred, color="red")
-plt.title("Linear Regression Result")
-plt.show()
+        for _ in range(self.n_iters):
+            y_pred = np.dot(X, self.weights) + self.bias
 
-# loss 그래프
-plt.plot(model.loss_history)
-plt.title("Loss Curve")
-plt.show()
+            dw = (1 / n_samples) * np.dot(X.T, (y_pred - y))
+            db = (1 / n_samples) * np.sum(y_pred - y)
+
+            self.weights -= self.lr * dw
+            self.bias -= self.lr * db
+
+            loss = np.mean((y_pred - y) ** 2)
+            self.loss_history.append(loss)
+
+        return self
+
+    def predict(self, X):
+        X = np.asarray(X, dtype=float)
+        return np.dot(X, self.weights) + self.bias
