@@ -1,1 +1,3 @@
-raw data
+make_classification
+make_blobs
+load_iris
