@@ -1,8 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from ml_scratch.linear_model.linear_regression import LinearRegression
-
 # 데이터 생성
 X = np.random.rand(100, 1) * 10
 y = 3 * X.squeeze() + 2 + np.random.randn(100)
